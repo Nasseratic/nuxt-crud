@@ -1,13 +1,5 @@
 <template>
   <div>
-    <div>
-      <h1>
-        <slot name="title"></slot>
-      </h1>
-      <div v-if="addButton">
-        <NuxtLink :to="'/'+module +'/create'"><i class="fa fa-plus"></i> Add {{ singleModule }}</NuxtLink>
-      </div>
-    </div>
     <nav class="breadcrumb" aria-label="breadcrumbs">
       <ul>
         <li>
@@ -19,6 +11,14 @@
         <slot name="crumb"></slot>
       </ul>
     </nav>
+    <div>
+      <h1>
+        <slot name="title"></slot>
+      </h1>
+      <div v-if="addButton">
+        <NuxtLink :to="'/'+module +'/create'"><i class="fa fa-plus"></i> Add {{ singleModule }}</NuxtLink>
+      </div>
+    </div>
   </div>
 </template>
 <script>
