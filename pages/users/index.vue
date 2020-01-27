@@ -10,6 +10,7 @@
         </li>
       </template>
     </top-table>
+    <a href="" @click.prevent="activeAll">Active All</a>
     <Table
       :defaultProps="defaultProps"
     />
@@ -29,7 +30,12 @@
     },
     mounted() {
       this.index();
-      this.headers = [...this.headers, ...this.editDeleteAction]
+      this.headers.push(this.editAction, this.deleteAction)
+    },
+    methods: {
+      activeAll() {
+        console.log("do some thing with ids" , this.ids)
+      }
     },
     data() {
       return {

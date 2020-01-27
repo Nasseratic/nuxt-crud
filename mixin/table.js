@@ -46,7 +46,7 @@ export default {
       search: {},
       /////default actions
       moduleName: "",
-      editDeleteAction: [
+      editAction:
         {
           name: "id",
           sort: false,
@@ -54,13 +54,14 @@ export default {
           render: {
             type: "html",
             action: (val) => {
-              return `<span><i class="fa fa-edit" ></i> Edit</span>`
+              return `<span><i class="fa fa-edit" ></i> </span>`
             },
           },
           click: (val) => {
             this.$router.push(this.moduleName + "/" + val.id)
           }
         },
+      deleteAction:
         {
           name: "id",
           sort: false,
@@ -68,7 +69,7 @@ export default {
           render: {
             type: "html",
             action: (val) => {
-              return `<span><i class="fa fa-trash" ></i> Delete</span>`
+              return `<span><i class="fa fa-trash" ></i> </span>`
             },
           },
           click: (row, header, indexOfRow) => {
@@ -84,14 +85,13 @@ export default {
             })
           }
         },
-      ],
       /////store
       row: {},
       ///edit
       id: 0,
       ///index
       headers: [],
-      ids:[],
+      ids: [],
     }
   },
   methods: {
@@ -269,7 +269,7 @@ export default {
         }
       })
     },
-    SetIds(ids){
+    SetIds(ids) {
       this.ids = ids;
     }
   }
