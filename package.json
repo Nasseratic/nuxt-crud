@@ -1,0 +1,25 @@
+{
+  "name": "5dmatWebDashboard",
+  "version": "1.0.0",
+  "description": "My mind-blowing Nuxt.js project",
+  "author": "Abdel Aziz hassan",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "@nuxtjs/axios": "^5.9.3",
+    "@nuxtjs/font-awesome": "^1.0.4",
+    "bootstrap-vue": "^2.2.2",
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
+    "nuxt": "^2.0.0",
+    "nuxt-buefy": "^0.3.2",
+    "pluralize": "^8.0.0",
+    "v-switch-case": "^1.0.3"
+  },
+  "devDependencies": {}
+}

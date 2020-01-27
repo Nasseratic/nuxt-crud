@@ -1,0 +1,20 @@
+<template>
+  <div>
+    <b-select v-model="header.filter.vModel" :placeholder="'Select a '+header.name"
+              @input="header.filter.action(header.filter.vModel)">
+      <option
+        v-for="option in header.filter.options"
+        :value="option.value"
+        :key="option.value">
+        {{ option.text }}
+      </option>
+    </b-select>
+  </div>
+</template>
+<script>
+  export default {
+    props: [
+      "header",
+    ]
+  }
+</script>
