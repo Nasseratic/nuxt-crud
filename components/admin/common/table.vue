@@ -1,5 +1,12 @@
 <template>
   <div>
+    <template v-if="defaultProps.tableOption.filterPosition === 'outside-table'">
+        <span v-for="(header , index) in defaultProps.headers" :key="header.name+'_filter_'+index">
+          <template v-if="header.filter !== undefined">
+            <filters :header="header"/>
+          </template>
+        </span>
+    </template>
     <table>
       <thead>
       <tr>
@@ -11,7 +18,8 @@
           <template v-if="header.sort">
             <a href="" @click.prevent="defaultProps.sorting(header.name)"
                :class="defaultProps.tableOption.sortKey === header.name ? 'active' : ''">
-                <span v-if="defaultProps.tableOption.sortKey === header.name && defaultProps.tableOption.sortValue === 'asc'">
+                <span
+                  v-if="defaultProps.tableOption.sortKey === header.name && defaultProps.tableOption.sortValue === 'asc'">
                   <i class="fa fa-arrow-circle-down"></i>
                 </span>
               <span v-else>
@@ -19,7 +27,7 @@
                 </span>
             </a>
           </template>
-          <template v-if="header.filter !== undefined">
+          <template v-if="header.filter !== undefined && defaultProps.tableOption.filterPosition === 'inside-table'">
             <filters :header="header"/>
           </template>
         </th>
@@ -80,8 +88,8 @@
         ids: [],
       }
     },
-    watch :{
-      ids(val){
+    watch: {
+      ids(val) {
         this.defaultProps.setIds(val);
       }
     },

@@ -1,23 +1,41 @@
 <template>
   <div>
+    <template v-if="header.filter.action === undefined">
     <b-datepicker
-      :max-date="new Date()"
-      v-model="header.filter.vModel"
-      :first-day-of-week="1"
-      placeholder="Click to select..."
-      @input="changeValue"
-    >
-      <button class="button is-primary" @click="header.filter.vModel = new Date()">
-        <b-icon icon="calendar-today"></b-icon>
-        <span>Today</span>
-      </button>
-      <button class="button is-danger" @click="clearDate">
-        <b-icon icon="close"></b-icon>
-        <span>Clear</span>
-      </button>
-    </b-datepicker>
+        :max-date="new Date()"
+        v-model="header.filter.vModel"
+        :first-day-of-week="1"
+        placeholder="Click to select..."
+      >
+        <button class="button is-primary" @click="header.filter.vModel = new Date()">
+          <b-icon icon="calendar-today"></b-icon>
+          <span>Today</span>
+        </button>
+        <button class="button is-danger" @click="clearDate">
+          <b-icon icon="close"></b-icon>
+          <span>Clear</span>
+        </button>
+      </b-datepicker>
+    </template>
+    <template v-else>
+      <b-datepicker
+        :max-date="new Date()"
+        v-model="header.filter.vModel"
+        :first-day-of-week="1"
+        placeholder="Click to select..."
+        @input="changeValue"
+      >
+        <button class="button is-primary" @click="header.filter.vModel = new Date()">
+          <b-icon icon="calendar-today"></b-icon>
+          <span>Today</span>
+        </button>
+        <button class="button is-danger" @click="clearDate">
+          <b-icon icon="close"></b-icon>
+          <span>Clear</span>
+        </button>
+      </b-datepicker>
+    </template>
   </div>
-
 </template>
 <script>
   import moment from 'moment';

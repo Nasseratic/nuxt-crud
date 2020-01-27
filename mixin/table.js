@@ -43,6 +43,7 @@ export default {
         loadingTable: false,
         sortKey: "id",
         sortValue: "desc",
+        filterPosition:"inside-table" /// inside-table or outside-table
       },
       search: {},
       /////default actions
