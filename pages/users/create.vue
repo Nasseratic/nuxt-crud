@@ -47,9 +47,7 @@
       }
     },
     beforeMount(){
-      console.log(this.user)
-      this.clearObjectValue(this.user)
-      console.log(this.user)
+      this.clearObjectValue(this.user);
     },
     methods: {
       storeData() {

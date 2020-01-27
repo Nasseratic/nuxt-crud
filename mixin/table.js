@@ -1,8 +1,9 @@
 import Notification from "./notifiaction"
 import Loading from "./loading"
+import Request from "./requests"
 
 export default {
-  mixins: [Notification, Loading],
+  mixins: [Notification, Loading, Request],
   computed: {
     defaultProps() {
       return {
@@ -80,7 +81,7 @@ export default {
               type: 'is-danger',
               hasIcon: true,
               onConfirm: () => {
-                this.delete(row.id, indexOfRow);
+                this.deleteRow(row.id, indexOfRow);
               }
             })
           }
@@ -105,107 +106,81 @@ export default {
       this.tableOption.sortKey = keyName;
       this.index();
     },
-    find() {
-      return new Promise((resolve, reject) => {
-        this.startLoading();
-        let url = this.adminUrl + "/" + this.moduleName + "/" + this.id;
-        this.$axios.get(url).then((res) => {
-          this.stopLoading();
-          resolve(res.data);
-        }).catch((res) => {
-          this.stopLoading();
-          this.handelResponseError(res);
-          reject(res);
-        });
-      })
-    },
     changePage(page) {
       this.response.payload.page = page;
       this.index();
     },
+    find() {
+      return new Promise((resolve, reject) => {
+        let url = this.adminUrl + "/" + this.moduleName + "/" + this.id;
+        this.get(url).then((res) => {
+          resolve(res)
+        }).catch((res) => {
+          reject(res)
+        })
+      })
+    },
     store(data, attrForRow) {
       return new Promise((resolve, reject) => {
-        this.startLoading();
         let url = this.adminUrl + "/" + this.moduleName;
         let dataAfterTransformation = this.getValuesFromObject(data);
         if (dataAfterTransformation) {
-          this.$axios.post(url, dataAfterTransformation).then((res) => {
-            this.stopLoading();
+          this.post(url, dataAfterTransformation).then((res) => {
             if (attrForRow !== undefined) {
-              this.row = res.data[attrForRow];
+              this.row = res[attrForRow];
             } else {
-              this.row = res.data.payload;
+              this.row = res.payload;
             }
-            this.success(res.data.message);
-            resolve(res.data)
+            resolve(res)
           }).catch((res) => {
-            this.stopLoading();
-            this.handelResponseError(res);
             reject(res)
-          });
-        } else {
-          this.stopLoading();
+          })
         }
       })
     },
     update(data, attrForRow) {
       return new Promise((resolve, reject) => {
-        this.startLoading();
         let url = this.adminUrl + "/" + this.moduleName + "/" + this.id;
         let dataAfterTransformation = this.getValuesFromObject(data);
         if (dataAfterTransformation) {
-          this.$axios.put(url, dataAfterTransformation).then((res) => {
-            this.stopLoading();
+          this.put(url, dataAfterTransformation).then((res) => {
             if (attrForRow !== undefined) {
-              this.row = res.data[attrForRow];
+              this.row = res[attrForRow];
             } else {
-              this.row = res.data.payload;
+              this.row = res.payload;
             }
-            this.success(res.data.message);
-            resolve(res.data)
+            resolve(res)
           }).catch((res) => {
-            this.stopLoading();
-            this.handelResponseError(res);
             reject(res)
-          });
-        } else {
-          this.stopLoading();
+          })
         }
       })
     },
-    delete(id, index) {
+    deleteRow(id, index) {
       return new Promise((resolve, reject) => {
-        this.startLoading();
         let url = this.adminUrl + "/" + this.moduleName + "/" + id;
-        this.$axios.delete(url).then((res) => {
-          this.stopLoading();
-          this.success(res.data.message);
+        this.delete(url).then((res) => {
           this.$delete(this.response.payload.records, index);
-          resolve(res.data);
+          resolve(res)
         }).catch((res) => {
-          this.stopLoading();
-          this.handelResponseError(res);
-          reject(res);
-        });
+          reject(res)
+        })
       })
     },
     index() {
       return new Promise((resolve, reject) => {
-        this.startLoading();
         let url = this.adminUrl + "/" + this.moduleName + "?sort=" + this.tableOption.sortKey + "|" + this.tableOption.sortValue;
         url += "&page=" + this.response.payload.page;
         url += "&limit=" + this.response.payload.limit;
         if (_.size(this.search) > 0) {
           url += this.appendSearchToUrl()
         }
-        this.$axios.get(url).then((res) => {
-          this.stopLoading();
-          this.response = res.data;
-          resolve(res.data);
-        }).catch((res) => {
-          this.stopLoading();
+        this.get(url).then((res) => {
           this.response = res;
-          reject(res);
+          resolve(res)
+        }).catch((res) => {
+          this.response = res;
+          reject(res)
         });
       });
     },
