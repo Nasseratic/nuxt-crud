@@ -14,6 +14,11 @@
     <Table
       :defaultProps="defaultProps"
     />
+    <!--    custom filter-->
+    <!--     table option must have this attr with this value to allow slots-->
+    <!--      <template v-slot:customFilter>-->
+    <!--        input-->
+    <!--      </template>-->
   </div>
 </template>
 <script>
@@ -34,7 +39,7 @@
     },
     methods: {
       activeAll() {
-        console.log("do some thing with ids" , this.ids)
+        console.log("do some thing with ids", this.ids)
       }
     },
     data() {
@@ -152,6 +157,22 @@
             }
           },
         ],
+        customFilter: [
+          {
+            filter: {
+              type: "select",
+              vModel: "",
+              options: [
+                {text: "select user status", value: ""},
+                {text: "Block", value: 1},
+                {text: "Active", value: 2},
+              ],
+              action: (val) => {
+                this.filter("block", val);
+              }
+            }
+          }
+        ]
       }
     }
   }

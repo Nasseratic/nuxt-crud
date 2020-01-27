@@ -43,7 +43,7 @@ export default {
         loadingTable: false,
         sortKey: "id",
         sortValue: "desc",
-        filterPosition:"inside-table" /// inside-table or outside-table
+        filterPosition: "outside-table" /// inside-table or outside-table
       },
       search: {},
       /////default actions
@@ -94,6 +94,7 @@ export default {
       ///index
       headers: [],
       ids: [],
+      customFilter: []
     }
   },
   methods: {
