@@ -17,7 +17,7 @@
     </top-table>
     <div>
       <form @submit.prevent="storeData" name="createfolder">
-        <user-form :inputs="user" :response="response"/>
+        <user-form :inputs="requestOptions.data" :response="response"/>
         <submit-button/>
         <reset-button/>
       </form>
@@ -28,12 +28,14 @@
   import TopTable from '../../components/admin/common/top_table'
   import UserForm from '../../components/forms'
   import User from '../../objects/admin/forms/users'
-  import MixinTable from "../../mixin/table"
   import SubmitButton from '../../components/inputs/submit'
   import ResetButton from '../../components/inputs/reset'
+  //mixin
+  import Store from "../../mixin/actions/store"
+  import Response from "../../mixin/objects/normalResponse"
 
   export default {
-    mixins: [MixinTable],
+    mixins: [Store, Response],
     components: {
       TopTable,
       UserForm,
@@ -43,17 +45,19 @@
     data() {
       return {
         moduleName: "users",
-        user: User
+        requestOptions: {
+          data: User
+        }
       }
     },
-    beforeMount(){
-      this.clearObjectValue(this.user);
+    beforeMount() {
+      this.clearObjectValue(this.requestOptions.data);
     },
     methods: {
       storeData() {
-        this.store(this.user).then((res) => {
+        this.store().then((res) => {
           this.$router.push("/" + this.moduleName)
-        })
+        }).catch(res => this.response = res)
       }
     }
   }

@@ -17,7 +17,7 @@
     </top-table>
     <div>
       <form @submit.prevent="updateData">
-        <user-form :inputs="user" :response="response"/>
+        <user-form :inputs="requestOptions.data" :response="response"/>
         <submit-button/>
         <reset-button/>
       </form>
@@ -28,12 +28,15 @@
   import TopTable from '../../components/admin/common/top_table'
   import UserForm from '../../components/forms'
   import User from '../../objects/admin/forms/users'
-  import MixinTable from "../../mixin/table"
   import SubmitButton from '../../components/inputs/submit'
   import ResetButton from '../../components/inputs/reset'
+  /////mixin
+  import Show from "../../mixin/actions/show"
+  import Update from "../../mixin/actions/update"
+  import Response from "../../mixin/objects/normalResponse"
 
   export default {
-    mixins: [MixinTable],
+    mixins: [Show, Update, Response],
     components: {
       TopTable,
       UserForm,
@@ -43,18 +46,21 @@
     data() {
       return {
         moduleName: "users",
-        user: User,
+        requestOptions: {
+          id: this.$route.params.id,
+          data: User
+        }
       }
     },
     mounted() {
-      this.id = this.$route.params.id;
-      this.find().then((row) => {
-        this.setValuesToObject(this.user, row.payload)
+      this.find().then((res) => {
+        this.response = res;
+        this.setValuesToObject(this.requestOptions.data, res.payload)
       })
     },
     methods: {
       updateData() {
-        this.update(this.user).then((res) => {
+        this.update().then((res) => {
           this.$router.push("/" + this.moduleName)
         })
       }

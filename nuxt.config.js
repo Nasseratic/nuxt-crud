@@ -2,7 +2,8 @@ import webpack from 'webpack'
 
 export default {
   env: {
-    adminUrl: process.env.ADMIN_URL || 'http://127.0.0.1:9090/admin'
+    adminUrl: process.env.ADMIN_URL || 'http://127.0.0.1:9090/admin',
+    notLoginUrl: process.env.NOT_LOGIN_URL || 'http://127.0.0.1:9090/admin'
   },
   mode: 'spa',
   /*

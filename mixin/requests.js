@@ -1,9 +1,13 @@
+import Loading from "./loading"
+import Notification from "./notifiaction"
+
 export default {
+  mixins: [Loading, Notification],
   methods: {
-    get(url) {
+    get(request) {
       return new Promise((resolve, reject) => {
         this.startLoading();
-        this.$axios.get(url).then((res) => {
+        this.$axios.get(request.url, request.headers).then((res) => {
           this.stopLoading();
           resolve(res.data);
         }).catch((res) => {
@@ -13,9 +17,10 @@ export default {
         });
       });
     },
-    post(url, data) {
+    post(request) {
       return new Promise((resolve, reject) => {
-        this.$axios.post(url, data).then((res) => {
+        this.startLoading();
+        this.$axios.post(request.url, request.data, request.headers).then((res) => {
           this.stopLoading();
           this.success(res.data.message);
           resolve(res.data)
@@ -26,9 +31,10 @@ export default {
         });
       });
     },
-    put(url, data) {
+    put(request) {
       return new Promise((resolve, reject) => {
-        this.$axios.put(url, data).then((res) => {
+        this.startLoading();
+        this.$axios.put(request.url, request.data, request.headers).then((res) => {
           this.stopLoading();
           this.success(res.data.message);
           resolve(res.data)
@@ -39,9 +45,10 @@ export default {
         });
       });
     },
-    delete(url) {
+    delete(request) {
       return new Promise((resolve, reject) => {
-        this.$axios.delete(url).then((res) => {
+        this.startLoading();
+        this.$axios.delete(request.url , request.headers).then((res) => {
           this.stopLoading();
           this.success(res.data.message);
           resolve(res.data);
@@ -51,6 +58,16 @@ export default {
           reject(res);
         });
       });
-    }
+    },
+    handelResponseError(res) {
+      if (res.response && res.response.data) {
+        this.response = res.response.data;
+        if (this.response.errors === null) {
+          this.danger(this.response.message)
+        } else if (this.response.errors.length === 0) {
+          this.danger(this.response.message)
+        }
+      }
+    },
   }
 }
