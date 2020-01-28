@@ -1,7 +1,7 @@
 <template>
   <div>
     <template v-if="header.filter.action === undefined">
-    <b-datepicker
+      <b-datepicker
         :max-date="new Date()"
         v-model="header.filter.vModel"
         :first-day-of-week="1"
@@ -44,6 +44,11 @@
     props: [
       "header",
     ],
+    mounted() {
+      if (this.$route.query[this.header.name] !== undefined) {
+        this.header.filter.vModel = this.$route.query[this.header.name];
+      }
+    },
     methods: {
       changeValue() {
         if (this.header.filter.vModel !== null) {

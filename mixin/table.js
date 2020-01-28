@@ -27,7 +27,6 @@ export default {
         sortValue: "desc",
         filterPosition: "inside-table" /// inside-table or outside-table
       },
-      search: {},
       /////default actions
       moduleName: "",
       editAction: {
@@ -76,20 +75,32 @@ export default {
       headers: [],
       ids: [],
       customFilter: [],
+      queries: {}
     }
   },
   methods: {
+    setDefaultQueryString() {
+      let loadingQuery = this.$route.query;
+      let defaultQuery = {
+        "sort": this.tableOption.sortKey + "|" + this.tableOption.sortValue,
+        "page": 1,
+        "limit": this.response.payload.limit
+      };
+      let merge = {...loadingQuery, ...this.queries, ...defaultQuery};
+      this.queries = merge
+    },
     index() {
+      /// first set the default query string
+      this.setDefaultQueryString();
       return new Promise((resolve, reject) => {
         let options = {
-          url: this.adminUrl + "/" + this.moduleName
+          url: this.adminUrl + "/" + this.moduleName + "?" + this.appendQueryStringToApiCall()
         };
-        options.url += "?sort=" + this.tableOption.sortKey + "|" + this.tableOption.sortValue;
-        options.url += "&page=" + this.response.payload.page;
-        options.url += "&limit=" + this.response.payload.limit;
-        if (_.size(this.search) > 0) {
-          options.url += this.appendSearchToUrl()
-        }
+        ///then now append all query strings with filters
+        this.$router.push({
+          query: this.queries
+        });
+        ////
         this.get(options).then((res) => {
           this.response = res;
           resolve(res)
@@ -113,17 +124,17 @@ export default {
       this.response.payload.page = page;
       this.index();
     },
-    appendSearchToUrl() {
-      let searchText = "";
-      _.forIn(this.search, function (value, key) {
+    appendQueryStringToApiCall() {
+      let query = "";
+      _.forIn(this.queries, (value, key) => {
         if (value && value !== "") {
-          searchText += "&" + key + "=" + value
+          query += key + "=" + value + "&";
         }
       });
-      return searchText
+      return query
     },
     filter(key, val) {
-      this.search[key] = val;
+      this.queries[key] = val;
       this.response.payload.page = 1;
       this.index();
     },

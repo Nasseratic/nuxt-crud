@@ -12,6 +12,11 @@
   export default {
     props: [
       "header",
-    ]
+    ],
+    mounted() {
+      if (this.$route.query[this.header.name] !== undefined) {
+        this.header.filter.vModel = this.$route.query[this.header.name];
+      }
+    },
   }
 </script>

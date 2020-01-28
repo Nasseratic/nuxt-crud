@@ -109,7 +109,7 @@
               type: "date",
               vModel: null,
               action: (val) => {
-                this.filter("create_at", val);
+                this.filter("created_at", val);
               }
             }
           },

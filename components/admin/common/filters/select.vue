@@ -1,7 +1,7 @@
 <template>
   <div>
     <template v-if="header.filter.action === undefined">
-    <b-select v-model="header.filter.vModel" :placeholder="'Select a '+header.name">
+      <b-select v-model="header.filter.vModel" :placeholder="'Select a '+header.name">
         <option
           v-for="option in header.filter.options"
           :value="option.value"
@@ -27,6 +27,11 @@
   export default {
     props: [
       "header",
-    ]
+    ],
+    mounted() {
+      if (this.$route.query[this.header.name] !== undefined) {
+        this.header.filter.vModel = this.$route.query[this.header.name];
+      }
+    },
   }
 </script>
