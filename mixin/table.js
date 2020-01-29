@@ -1,7 +1,7 @@
-import Notification from "./notifiaction"
-import Request from "./requests"
-import Delete from "./actions/delete"
-import PaginationResponse from "./objects/paginateResponse"
+import Notification from "./notifiaction";
+import Request from "./requests";
+import Delete from "./actions/delete";
+import PaginationResponse from "./objects/paginateResponse";
 
 export default {
   mixins: [Notification, Request, Delete, PaginationResponse],
@@ -13,8 +13,8 @@ export default {
         tableOption: this.tableOption,
         sorting: this.sorting,
         changePage: this.changePage,
-        setIds: this.SetIds,
-      }
+        setIds: this.SetIds
+      };
     }
   },
   data() {
@@ -35,12 +35,12 @@ export default {
         title: "Edit",
         render: {
           type: "html",
-          action: (val) => {
-            return `<span><i class="fa fa-edit" ></i> </span>`
-          },
+          action: val => {
+            return `<span><i class="fa fa-edit" ></i> </span>`;
+          }
         },
-        click: (val) => {
-          this.$router.push(this.moduleName + "/" + val.id)
+        click: val => {
+          this.$router.push(this.moduleName + "/" + val.id);
         }
       },
       deleteAction: {
@@ -49,16 +49,17 @@ export default {
         title: "Delete",
         render: {
           type: "html",
-          action: (val) => {
-            return `<span><i class="fa fa-trash" ></i> </span>`
-          },
+          action: val => {
+            return `<span><i class="fa fa-trash" ></i> </span>`;
+          }
         },
         click: (row, header, indexOfRow) => {
           this.$buefy.dialog.confirm({
-            title: 'Are You Sure you want to delete !',
-            message: 'are you sure you want to delete ?  you can not restore this action',
-            confirmText: 'Delete',
-            type: 'is-danger',
+            title: "Are You Sure you want to delete !",
+            message:
+              "are you sure you want to delete ?  you can not restore this action",
+            confirmText: "Delete",
+            type: "is-danger",
             hasIcon: true,
             onConfirm: () => {
               let options = {
@@ -68,7 +69,7 @@ export default {
               };
               this.deleteRow(options);
             }
-          })
+          });
         }
       },
       ///index
@@ -76,52 +77,72 @@ export default {
       ids: [],
       customFilter: [],
       queries: {}
-    }
+    };
   },
   methods: {
     setDefaultQueryString() {
       let loadingQuery = this.$route.query;
       let defaultQuery = {
-        "sort": this.tableOption.sortKey + "|" + this.tableOption.sortValue,
-        "page": 1,
-        "limit": this.response.payload.limit
+        sort: "id|desc",
+        page: 1,
+        limit: 30
       };
-      let merge = {...loadingQuery, ...this.queries, ...defaultQuery};
-      this.queries = merge
+
+      let merge = {
+        ...defaultQuery,
+        ...loadingQuery,
+        ...this.queries
+      };
+      this.queries = merge;
     },
     index() {
-      /// first set the default query string
-      this.setDefaultQueryString();
-      return new Promise((resolve, reject) => {
-        let options = {
-          url: this.adminUrl + "/" + this.moduleName + "?" + this.appendQueryStringToApiCall()
-        };
-        ///then now append all query strings with filters
-        this.$router.push({
-          query: this.queries
+      if (this.__timeout) clearTimeout(this.__timeout);
+      this.__timeout = setTimeout(() => {
+        /// first set the default query string
+        this.setDefaultQueryString();
+        return new Promise((resolve, reject) => {
+          let options = {
+            url:
+              this.adminUrl +
+              "/" +
+              this.moduleName +
+              "?" +
+              this.appendQueryStringToApiCall()
+          };
+          ///then now append all query strings with filters
+          this.$router.push({
+            query: this.queries
+          });
+          ////
+          this.get(options)
+            .then(res => {
+              this.response = res;
+              resolve(res);
+            })
+            .catch(res => {
+              this.response = res;
+              reject(res);
+            });
         });
-        ////
-        this.get(options).then((res) => {
-          this.response = res;
-          resolve(res)
-        }).catch((res) => {
-          this.response = res;
-          reject(res)
-        });
-      });
+      }, 400);
     },
     sorting(keyName) {
       if (this.tableOption.sortKey === keyName) {
-        this.tableOption.sortValue = (this.tableOption.sortValue === "desc" ? "asc" : "desc");
+        this.tableOption.sortValue =
+          this.tableOption.sortValue === "desc" ? "asc" : "desc";
       } else {
         this.tableOption.sortValue = "desc";
       }
       this.response.payload.page = 1;
       this.tableOption.sortKey = keyName;
+      this.queries.sort =
+        this.tableOption.sortKey + "|" + this.tableOption.sortValue;
       this.index();
     },
     changePage(page) {
-      this.response.payload.page = page;
+      // this.response.payload.page = page;
+      console.log(page);
+      this.queries.page = page;
       this.index();
     },
     appendQueryStringToApiCall() {
@@ -131,7 +152,7 @@ export default {
           query += key + "=" + value + "&";
         }
       });
-      return query
+      return query;
     },
     filter(key, val) {
       this.queries[key] = val;
@@ -142,4 +163,4 @@ export default {
       this.ids = ids;
     }
   }
-}
+};
