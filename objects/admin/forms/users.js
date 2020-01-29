@@ -1,4 +1,4 @@
-export default [
+const formSettings = JSON.stringify([
   {
     label: "Name",
     name: "name",
@@ -38,11 +38,12 @@ export default [
     submitUpdate: true,
     storeType: "integer",
     placeholder: {
-      text: "Select Block Status", value: 0
+      text: "Select Block Status",
+      value: 0
     },
     options: [
-      {text: "Active", value: 2},
-      {text: "Block", value: 1},
+      { text: "Active", value: 2 },
+      { text: "Block", value: 1 }
     ]
   },
   {
@@ -54,11 +55,12 @@ export default [
     submitUpdate: true,
     storeType: "integer",
     placeholder: {
-      text: "Select Role", value: 0
+      text: "Select Role",
+      value: 0
     },
     options: [
-      {text: "Admin", value: 2},
-      {text: "User", value: 1},
+      { text: "Admin", value: 2 },
+      { text: "User", value: 1 }
     ]
   },
   {
@@ -67,7 +69,7 @@ export default [
     vModel: "",
     type: "date",
     submitStore: false,
-    submitUpdate: false,
+    submitUpdate: false
   },
   {
     label: "Created At",
@@ -75,6 +77,8 @@ export default [
     vModel: "",
     type: "date",
     submitStore: false,
-    submitUpdate: false,
-  },
-]
+    submitUpdate: false
+  }
+]);
+
+export default () => JSON.parse(formSettings);
