@@ -6,8 +6,8 @@ export default {
         code: 200,
         errors: [],
         message: "",
-        status: true,
-      },
-    }
+        status: true
+      }
+    };
   }
-}
+};

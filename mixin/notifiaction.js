@@ -1,8 +1,8 @@
 export default {
-  data(){
+  data() {
     return {
-      notificationPosition: "is-bottom",
-    }
+      notificationPosition: "is-bottom"
+    };
   },
   methods: {
     notification(message, type) {
@@ -10,14 +10,20 @@ export default {
         duration: 2000,
         message: message,
         type: type,
-        position: this.notificationPosition,
-      })
+        position: this.notificationPosition
+      });
     },
     success(message) {
-      this.notification(message ? message : 'Something happened correctly!', 'is-success');
+      this.notification(
+        message ? message : "Something happened correctly!",
+        "is-success"
+      );
     },
     danger(message) {
-      this.notification(message ? message : 'Something\'s not good, also I\'m on bottom', 'is-danger');
-    },
+      this.notification(
+        message ? message : "Something's not good, also I'm on bottom",
+        "is-danger"
+      );
+    }
   }
-}
+};

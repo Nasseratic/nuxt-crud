@@ -1,8 +1,10 @@
 <template>
   <div>
     <template v-if="header.render !== undefined">
-      <template v-if="header.render !== undefined && header.render.type === 'html'">
-          <span v-html="header.render.action(column[header.name])"></span>
+      <template
+        v-if="header.render !== undefined && header.render.type === 'html'"
+      >
+        <span v-html="header.render.action(column[header.name])"></span>
       </template>
       <template v-else>
         {{ header.render.action(column[header.name]) }}
@@ -14,7 +16,7 @@
   </div>
 </template>
 <script>
-  export default {
-    props: ["header", "column"]
-  }
+export default {
+  props: ["header", "column"]
+};
 </script>

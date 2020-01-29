@@ -4,9 +4,9 @@
  * function more than once
  */
 
-import Request from "../requests"
-import ManipulateData from "../helpers/manipulateData"
-import Object from "../helpers/object"
+import Request from "../requests";
+import ManipulateData from "../helpers/manipulateData";
+import Object from "../helpers/object";
 
 export default {
   mixins: [Request, ManipulateData, Object],
@@ -21,7 +21,7 @@ export default {
         responseAttr: "", // if you need some specific attr from response you can pass it
         id: null // it you not pass url we will use to build url
       }
-    }
+    };
   },
   methods: {
     update(requestOptions) {
@@ -30,22 +30,33 @@ export default {
       }
       return new Promise((resolve, reject) => {
         if (!this.issetAndNotEmptyString(this.requestOptions, "url")) {
-          this.requestOptions.url = this.adminUrl + "/" + this.moduleName + "/" + this.requestOptions.id;
+          this.requestOptions.url =
+            this.adminUrl +
+            "/" +
+            this.moduleName +
+            "/" +
+            this.requestOptions.id;
         }
-        this.requestOptions.data = this.transformDataType(this.requestOptions.data);
+        this.requestOptions.data = this.transformDataType(
+          this.requestOptions.data
+        );
         if (this.requestOptions.data) {
-          this.put(this.requestOptions).then((res) => {
-            if (this.issetAndNotEmptyString(this.requestOptions, "responseAttr")) {
-              this.row = res[this.requestOptions.responseAttr];
-            } else {
-              this.row = res.payload;
-            }
-            resolve(res)
-          }).catch((res) => {
-            reject(res)
-          })
+          this.put(this.requestOptions)
+            .then(res => {
+              if (
+                this.issetAndNotEmptyString(this.requestOptions, "responseAttr")
+              ) {
+                this.row = res[this.requestOptions.responseAttr];
+              } else {
+                this.row = res.payload;
+              }
+              resolve(res);
+            })
+            .catch(res => {
+              reject(res);
+            });
         }
-      })
-    },
+      });
+    }
   }
-}
+};

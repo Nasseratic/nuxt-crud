@@ -1,10 +1,10 @@
 <template>
   <div>
     <b-form-group
-      :id="input.name+input.type"
+      :id="input.name + input.type"
       :label="input.label"
       :label-for="input.name"
-      :description="input.description !== undefined ? input.description  : ''"
+      :description="input.description !== undefined ? input.description : ''"
     >
       <b-form-input
         :id="input.name"
@@ -14,10 +14,10 @@
         :placeholder="input.placeholder"
       ></b-form-input>
     </b-form-group>
-    <div v-if="error && error[input.name]" >
+    <div v-if="error && error[input.name]">
       <b-message type="is-danger" has-icon>
         <ul>
-          <li v-for="(err , index) in error[input.name]">
+          <li v-for="(err, index) in error[input.name]">
             {{ err }}
           </li>
         </ul>
@@ -26,10 +26,7 @@
   </div>
 </template>
 <script>
-  export default {
-    props: [
-      "input",
-      "error"
-    ]
-  }
+export default {
+  props: ["input", "error"]
+};
 </script>

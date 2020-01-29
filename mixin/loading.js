@@ -2,15 +2,15 @@ export default {
   data() {
     return {
       isLoading: true,
-      loadingComponent: null,
-    }
+      loadingComponent: null
+    };
   },
   methods: {
     startLoading() {
-      this.loadingComponent = this.$buefy.loading.open()
+      this.loadingComponent = this.$buefy.loading.open();
     },
     stopLoading() {
       this.loadingComponent.close();
-    },
+    }
   }
-}
+};

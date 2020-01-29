@@ -1,5 +1,5 @@
 export default {
-  data(){
+  data() {
     return {
       response: {
         payload: {
@@ -10,13 +10,13 @@ export default {
           limit: 30,
           page: 1,
           prev_page: 2,
-          next_page: 0,
+          next_page: 0
         },
         code: 200,
         errors: [],
         message: "",
-        status: true,
-      },
-    }
+        status: true
+      }
+    };
   }
-}
+};
